@@ -42,55 +42,76 @@
 								<div class="left-detail clearfix">
 									<strong>Send us your query with <text class="text-danger">contact, passport first,second and last page scan copy and photo</text>,
                   We will contact you within 24-48 hours on given mobile number </strong>
-									<form action="submit.php" enctype="multipart/form-data" method="post" >
+									<form  id="contact_form" <?php /*action="submit.php" enctype="multipart/form-data" method="post" */ ?>>
 										<fieldset>
-											<input type="text" placeholder="NAME" id="name" required="required">
-                      <div class="form-group">
-                        <p class="text-danger">
-                          Attach Following documents
-                          <li>Passport 1st page</li>
-                          <li>Passport 2st page</li>
-                          <li>Passport Last page</li>
-                          <li>Photo (Passport size)</li>
-                        </p>
-                        <div id="content">
+										<div class="form-group">
+
+										  <select id="ad" class="form-control" name="">
+
+										      <?php if($q=$con->query("select id,heading from ads where is_active = 1") ){
+										        while($row = $q->fetch_assoc()){
+										          echo '<option value='.$row['id'].'>'.$row['heading'].'</option>';
+										        }
+										      }
+										      ?>
+										  </select>
+										</div>
+										  <input type="text" placeholder="NAME" id="name" required="required">
+
+										  <?php /*
+										  <div class="form-group">
+										  <label for="file">Passport 1<sup>st</sup> page</label>
+										  <input id="pas1" type="file" name="file" value="" required="required">
+										    <label for="file">Passport 2<sup>nd</sup> page</label>
+										    <input type="file" name="file" value=""  >
+										  </div>
+										  <div class="form-group">
+										    <label for="file">Passport last page</label>
+										    <input type="file" name="file" value="">
+										  </div>
+										  <div class="form-group">
+										    <label for="file">Photo(passport size)</label>
+										    <input type="file" name="file" value="" required="required">
+										  </div>
+										  */
+										  ?>
+										  <span class="coll-1">
+										    <input type="text" placeholder="EMAIL" id="email">
+										  </span>
+
+										  <span class="coll-1 last">
+										    <input type="text" placeholder="PHONE" id="phone" required="required">
+										  </span>
 
 
-                      		<!-- Example 2 -->
-                      	    <input type="file" name="files[]" id="filer_input2" multiple="multiple">
-                      		<!-- end of Example 2 -->
 
-                          </div>
-                        <label for="file">Passport 1<sup>st</sup> page</label>
-                        <input id="pas1" type="file" name="file" value="" required="required">
-                      </div>
-
-                      <div class="form-group">
-                        <label for="file">Passport 2<sup>nd</sup> page</label>
-                        <input type="file" name="file" value=""  >
-                      </div>
-                      <div class="form-group">
-                        <label for="file">Passport last page</label>
-                        <input type="file" name="file" value="">
-                      </div>
-                      <div class="form-group">
-                        <label for="file">Photo(passport size)</label>
-                        <input type="file" name="file" value="" required="required">
-                      </div>
-
-											<span class="coll-1">
-												<input type="text" placeholder="EMAIL" id="email">
-											</span>
-
-											<span class="coll-1 last">
-												<input type="text" placeholder="PHONE" id="sub" required="required">
-											</span>
+										  <div class="form-group">
+										    <p class="text-grey">
+										      <stron>
+										        <i>Please attach following</i>
+										        <br><label for="">Passport 1<sup>st</sup> page, 2<sup>nd</sup> page &amp; last page<span class="text-danger">*</span></label>
+										        <br><label for="">Photo (Passport size)<span class="text-danger">*</span></label>
+										        <br><label for="">Experience Letter (if any)</label>
+										      </stron>
+										    </p>
+										    <div id="content">
 
 
-											<div class="box clearfix">
-												<textarea placeholder="MESSAGE" id="message" > </textarea>
-												<input type="button" value="POST MESSAGE" id="submit">
-											</div>
+										      <!-- Example 2 -->
+										        <input type="file" name="files[]" id="filer_input2" multiple="multiple">
+										      <!-- end of Example 2 -->
+
+										      </div>
+
+										  </div>
+										  <div class="form-group">
+										    <textarea class="form-control" style="background:#f4f4f4" id="message" placeholder="MESSAGE" name="name" rows="8" cols="40"></textarea>
+										  </div>
+										  <input id="imgs" type="hidden" name="" value="">
+										  <div class="form-group text-center">
+										    <input type="button" value="POST MESSAGE" id="submit">
+										  </div>
+
 										</fieldset>
 									</form>
 
@@ -164,11 +185,38 @@
 		<script src="assets/js/site.js"></script>
     <script src="uploader/js/jquery.filer.min.js" type="text/javascript"></script>
     <script src="uploader/js/custom.js" type="text/javascript"></script>
-    <script type="text/javascript">
-      function upload(){
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$('#submit').click(function(){
+					var name = $('#name').val();
+					var email = $('#email').val();
+					var phone = $('#phone').val();
+					var ad = $('#ad').val();
+					var img = $('#imgs').val();
+					var msg = $('#message').val();
+					img = img.substr(1);
+					var postData = {
+						'name' : name,
+						'email' : email,
+						'phone' : phone,
+						'ad' : ad,
+						'files' :img,
+						'msg' : msg
+					};
 
-      }
-    </script>
+					console.log(postData);
+					$.ajax({
+						type : "POST",
+						url : "submit.php",
+						data : postData,
+						success : function(res){
+							console.log(res);
+							$('#contact_form').html('<h5 class="text-success">Thank you. Your application has been submitted and we will get back to you within 48 hours.</h5>');
+						}
+					})
+				})
+			})
+		</script>
 
 	</body>
 </html>

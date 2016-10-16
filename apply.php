@@ -1,12 +1,7 @@
-<?php
-/* if(! isset($_REQUEST['id']) ) : ?>
-  <script>
-  window.location="contact.php";
-  </script>
-<?php endif;
-*/
-?>
 <?php include('head.php'); ?>
+<link href="uploader/css/jquery.filer.css" rel="stylesheet">
+<link href="uploader/css/themes/jquery.filer-dragdropbox-theme.css" rel="stylesheet">
+
 <!--content Section Start Here -->
 			<div id="content">
 
@@ -14,7 +9,7 @@
 					<div class="container">
 						<div class="row">
 							<div class="col-xs-12">
-								<h3>CONTACT US</h3>
+								<h3>APPLY</h3>
 							</div>
 						</div>
 					</div>
@@ -29,7 +24,7 @@
 										<a href="#">home</a>
 									</li>
 									<li>
-										contact us
+										apply
 									</li>
 								</ul>
 							</div>
@@ -37,32 +32,86 @@
 
 						<div class="col-xs-12">
 							<div class="our_contact clearfix">
-								<div id="success">
-									<div role="alert" class="alert alert-success">
-										<strong>Thanks</strong> for using our template. Your message has been sent.
-									</div>
-								</div>
-								<h3>GET IN TOUCH <i></i></h3>
+
 
 								<div class="left-detail clearfix">
-									<strong>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy
-									nibh euismod tincidunt ut laoreet dolore magna aliquam </strong>
-									<form action="#">
+									<strong>Send us your query with <text class="text-danger">contact, passport first,second and last page scan copy and photo</text>,
+                  We will contact you within 24-48 hours on given mobile number </strong>
+									<form  id="contact_form" <?php /*action="submit.php" enctype="multipart/form-data" method="post" */ ?>>
 										<fieldset>
-											<input type="text" placeholder="NAME" id="name">
+											<div class="form-group">
 
+												<select id="ad" class="form-control text-uppercase" name="">
+
+														<?php if($q=$con->query("select id,heading from ads where is_active = 1") ){
+															while($row = $q->fetch_assoc()){
+																if($_REQUEST['id'] == $row['id'] ){
+																	echo '<option class="text-uppercase" value="'.$row['id'].'" selected>'.$row['heading'].'</option>';
+																}else{
+																	echo '<option class="text-uppercase" value='.$row['id'].'>'.$row['heading'].'</option>';
+																}
+
+															}
+														}
+														?>
+												</select>
+											</div>
+											<input type="text" placeholder="NAME" id="name" required="required">
+
+											<?php /*
+                      <div class="form-group">
+											<label for="file">Passport 1<sup>st</sup> page</label>
+											<input id="pas1" type="file" name="file" value="" required="required">
+                        <label for="file">Passport 2<sup>nd</sup> page</label>
+                        <input type="file" name="file" value=""  >
+                      </div>
+                      <div class="form-group">
+                        <label for="file">Passport last page</label>
+                        <input type="file" name="file" value="">
+                      </div>
+                      <div class="form-group">
+                        <label for="file">Photo(passport size)</label>
+                        <input type="file" name="file" value="" required="required">
+                      </div>
+											*/
+											?>
 											<span class="coll-1">
 												<input type="text" placeholder="EMAIL" id="email">
 											</span>
 
 											<span class="coll-1 last">
-												<input type="text" placeholder="SUBJECT" id="sub">
+												<input type="text" placeholder="PHONE" id="phone" required="required">
 											</span>
 
-											<div class="box clearfix">
-												<textarea placeholder="MESSAGE" id="message" > </textarea>
+
+
+											<div class="form-group">
+                        <p class="text-grey">
+													<stron>
+	                          <i>Please attach following</i>
+														<br><label for="">Passport 1<sup>st</sup> page, 2<sup>nd</sup> page &amp; last page<span class="text-danger">*</span></label>
+														<br><label for="">Photo (Passport size)<span class="text-danger">*</span></label>
+														<br><label for="">Experience Letter (if any)</label>
+													</stron>
+                        </p>
+                        <div id="content">
+
+
+                      		<!-- Example 2 -->
+                      	    <input type="file" name="files[]" id="filer_input2" multiple="multiple">
+                      		<!-- end of Example 2 -->
+
+                          </div>
+
+                      </div>
+											<div class="form-group">
+												<textarea class="form-control" style="background:#f4f4f4" id="message" placeholder="MESSAGE" name="name" rows="8" cols="40"></textarea>
+											</div>
+											<input id="imgs" type="hidden" name="" value="">
+											<div class="form-group text-center">
 												<input type="button" value="POST MESSAGE" id="submit">
 											</div>
+
 										</fieldset>
 									</form>
 
@@ -75,17 +124,17 @@
 										<a href="#" class="fa fa-google-plus"></a>
 									</div>
 									<address>
-										<strong>LONDON OFFICE</strong>
+										<strong>DUBAI OFFICE</strong>
 										<ul>
 											<li>
 												<i class="location-svg"><img src="assets/svg/05.svg" alt="" class="svg"/></i>
-												<span>227 Marion Street</span>
-												<span>Columbia, SC 29201</span>
+												<span>115 AL Braha</span>
+												<span>Deira, Dubai - UAE</span>
 											</li>
 
 											<li>
 												<i class="fa fa-phone"></i>
-												<span>1-888-123-4567</span>
+												<span><?=$phone?></span>
 											</li>
 
 											<li>
@@ -95,7 +144,7 @@
 
 											<li>
 												<i class="fa fa-envelope-o"></i>
-												<span><a href="mailto:info@industrail.com">info@industrail.com</a></span>
+												<span><a href="mailto:<?=$info_email?>"><?=$info_email?></a></span>
 											</li>
 										</ul>
 									</address>
@@ -134,6 +183,42 @@
 		<!-- Google Map -->
 		<script src="assets/js/validation.js"></script>
 		<script src="assets/js/site.js"></script>
+    <script src="uploader/js/jquery.filer.min.js" type="text/javascript"></script>
+    <script src="uploader/js/custom.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$('#submit').click(function(){
+					var name = $('#name').val();
+					var email = $('#email').val();
+					var phone = $('#phone').val();
+					var ad = $('#ad').val();
+					var img = $('#imgs').val();
+					var msg = $('#message').val();
+					img = img.substr(1);
+					var postData = {
+						'name' : name,
+						'email' : email,
+						'phone' : phone,
+						'ad' : ad,
+						'files' :img,
+						'msg' : msg
+					};
 
+					console.log(postData);
+					$.ajax({
+						type : "POST",
+						url : "submit.php",
+						data : postData,
+						success : function(res){
+							console.log(res);
+							$('#contact_form').html('<h5 class="text-success">Thank you. Your application has been submitted and we will get back to you within 48 hours.</h5>');
+						}
+					})
+				})
+			})
+		</script>
+<script type="text/javascript">
+
+</script>
 	</body>
 </html>

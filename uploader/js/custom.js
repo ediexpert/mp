@@ -92,7 +92,7 @@ $(document).ready(function(){
 					filerKit = inputEl.prop("jFiler");
 
         		filerKit.files_list[id].name = new_file_name;
-
+						$('#imgs').val($('#imgs').val() +","+ new_file_name);
 				itemEl.find(".jFiler-jProgressBar").fadeOut("slow", function(){
 					$("<div class=\"jFiler-item-others text-success\"><i class=\"icon-jfi-check-circle\"></i> Success</div>").hide().appendTo(parent).fadeIn("slow");
 				});
